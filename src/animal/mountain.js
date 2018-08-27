@@ -1,12 +1,32 @@
 import move from './move'
+import { downLoadImage } from '../utils/index'
+
 
 class Mountain extends move {
     constructor(props) {
         super(props)
         this.state = {
-            a:1,
-            b: 2
+            image: null
         }
+        this.getImage(props.url)
+    }
+
+    getImage = async(url) => {
+        const image = await downLoadImage(url)
+        this.setState({
+            image
+        })
+    }
+
+    render = (context) => {
+        const { image } = this.state
+        if( !image ) {
+            return
+        }
+        const { x, y } = this.move()
+        context.beginPath();
+        context.drawImage(image, x, y );
+        
     }
 }
 
