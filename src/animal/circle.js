@@ -1,6 +1,6 @@
 class Circle {
     constructor(option) {
-        const { r = 5, tx = 5, ty = 5, color = '#f00' } = option
+        const { r = 5, tx = 5, ty = 5, color = '#000' } = option
         this.state = {
             width: option.width,
             height: option.height,
@@ -53,5 +53,4 @@ class Circle {
         context.closePath();
     }
 }
-
-module.exports = Circle
+export default Circle

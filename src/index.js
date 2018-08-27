@@ -1,8 +1,6 @@
 import 'babel-polyfill'
+import mountain from './animal/mountain'
 
-
-
-const Circle = require('./animal/circle.js')
 
 const canvas = document.querySelector('#app')
 const context = canvas.getContext('2d')
@@ -11,22 +9,10 @@ const global = {
     width: window.innerWidth
 }
 
+console.log(new mountain({}))
+
 let arr = []
-
-arr.push(new Circle({
-    height: global.height,
-    width: global.width,
-    r: 5,
-    color: '#0ff'
-}))
-
-const image = new Image()
-image.onload = function () {
-    context.drawImage( image, 0, 0, 300, 300);
-}
-image.src = './asset/a.jpg'
-
-// action()
+clearPaint(context)
 function action () {
     return requestAnimationFrame(() => {
         clearPaint(context)
@@ -39,10 +25,10 @@ function action () {
 
 function clearPaint (context) {
     context.beginPath();
-    
     context.rect(0, 0, global.width, global.height)
-    context.fillStyle='#fff'
+    context.fillStyle='#f6f0e9'
+    context.lineWidth=1
+    context.strokeStyle = '#f6f0e9'
     context.fill();
     context.stroke()
-    
 }
