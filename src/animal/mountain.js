@@ -8,7 +8,7 @@ class Mountain extends move {
         super(props)
         this.state = {
             image: null,
-            next: false
+            next: false,
         }
         this.getImage(props.url)
     }
@@ -26,8 +26,7 @@ class Mountain extends move {
     }
 
     checkVisible = (x) => {
-        console.log(x, this.state.width)
-        if( x > -this.state.width/2 && !this.state.next ) {
+        if( x > -this.state.width/4 && !this.state.next ) {
             this.props.next && this.props.next()
             this.setState({
                 next: true
@@ -43,17 +42,22 @@ class Mountain extends move {
     }
 
     render = (context) => {
-        const { image } = this.state
+        const { image, height, width } = this.state
         if( !image ) {
             return
         }
-        const { x, y } = this.move()
+        const { x, y, rotate } = this.move()
         if( this.checkVisible(x) ) {
             return
         }
+        context.save()
         context.beginPath();
+        context.translate(x+(width/2), y+(height/2))
+        // console.log(x+(width/2), y+(height/2))
+        context.rotate(Math.PI*rotate/300)
+        context.translate(-(x+(width/2)),-( y+(height/2)))
         context.drawImage(image, x, y );
-        
+        context.restore()
     }
 }
 

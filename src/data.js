@@ -4,9 +4,15 @@ import global from './global'
 
 class data {
     constructor(option) {
+        const { yeUrl, huaUrl, yeCount = 0, huaCount = 0, positionY = 0, baseY = 0 } = option
         this.state = {
             arr: [],
-            url
+            yeCount,
+            huaCount,
+            yeUrl,
+            huaUrl,
+            positionY,
+            baseY
         }
         this.next()
     }
@@ -32,26 +38,67 @@ class data {
         })
     }
 
+    getParams = () => {
+        let ran = Math.ceil(Math.random()*9)%3,
+            url,
+            y
+
+        const {
+            yeCount,
+            huaCount,
+            yeUrl,
+            huaUrl,
+            positionY,
+            baseY
+        } = this.state
+
+        if( ran == 0 ) {
+            url = `${huaUrl}${Math.ceil(Math.random()*huaCount)}.png`
+        }else{
+            url = `${yeUrl}${Math.ceil(Math.random()*yeCount)}.png`
+        }
+        y = Math.random()*positionY + baseY
+        return {
+            url,
+            y,
+            id: this.createId(),
+            next: this.next
+        }
+    }
+
     next = () => {
         const { arr } = this.state
-        let { count } = this.state
-        count ++ 
-        if( count > 12 ) {
-            count = 1
-        }
-        this.setState({
-            count
-        })
-        arr.push(new mountain({
-            url: `./floor/ye-1-1.png`,
-            id: this.createId(),
-            y: Math.random() * global.height/2,
-            next: this.next
-        }))
+        const target = this.getParams()
+        arr.push(new mountain(target))
     }
     
+    render = (context) => {
+        this.state.arr.forEach(item => {
+            item.render(context)
+        })
+    }
 }
 
-const asset = new data()
+const asset1 = new data({
+    yeCount: 7,
+    huaCount: 8,
+    yeUrl: './floor/ye-1-',
+    huaUrl: './floor/hua-1-',
+    positionY: global.height*1/3,
+    baseY: global.height*2/3
+})
 
-export default asset.state.arr
+const asset2 = new data({
+    yeCount: 4,
+    huaCount: 4,
+    yeUrl: './floor/ye-2-',
+    huaUrl: './floor/hua-2-',
+    positionY: global.height*1/3,
+    baseY: global.height*1/2
+})
+
+const arr = [
+    asset2,
+    asset1
+]
+export default arr
