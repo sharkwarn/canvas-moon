@@ -7,6 +7,7 @@ class move {
             speedX, 
             speedY
         }
+        this.props = option
     }
 
     setMoveState = (obj = {}) => {
